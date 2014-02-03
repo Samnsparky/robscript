@@ -3,7 +3,7 @@ Your friendly neighborhood cross-platform "automated builds shouldn't suck" glor
 
 
 ##Authors###
-Developed by "Sam Pottinger":https://gleap.org for "LabJack":http://labjack.com.
+Developed by [Sam Pottinger](https://gleap.org) for [LabJack](http://labjack.com).
 
 
 ##Motivation###
@@ -18,7 +18,7 @@ Robscripts (noimnally endinging in .rob) have line command per line. The first i
 
 
 ###.robscript files have awesome templating for reusability super-powers!###
-All rob scripts are run as "jinja2":http://jinja.pocoo.org/docs/ templates to make them easier to re-use between machines and build environments. How do you provide values to those jinja2 templates? A JSON file of the form:
+All rob scripts are run as [jinja2](http://jinja.pocoo.org/docs/) templates to make them easier to re-use between machines and build environments. How do you provide values to those jinja2 templates? A JSON file of the form:
 
 ```js
 {
@@ -92,4 +92,4 @@ Want to change ROB-Script itself. Good thing it's unit tested and a single Pytho
 
 ```python robscript_tests.py```
 
-Hey, you might need to install "pymox":https://code.google.com/p/pymox/ to run the tests but that's no bad is it?
+Hey, you might need to install [pymox](https://code.google.com/p/pymox/) to run the tests but that's no bad is it?
