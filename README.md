@@ -13,6 +13,12 @@ LJ-ROB (LabJack's remote orchestrated build system) simplifies cross-platform bu
 
 ##Getting Started##
 
+###Dependencies###
+It's up to you if you want to use a [virtual environemnt](http://docs.python-guide.org/en/latest/dev/virtualenvs/). However...
+
+```pip install -r requirements.txt```
+
+
 ###Meet the .robscript file###
 Robscripts (noimnally endinging in .rob) have line command per line. The first item per line is the command followed by tab (not four spaces... tabs!) separated parameters. Sorry it's weird. Made writing a ROB-Script parser in about an hour pretty easy though!
 
