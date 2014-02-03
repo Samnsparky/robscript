@@ -87,6 +87,6 @@ Upload your script's log file to ROB's repository for built stuff. If running ro
 ##Developing ROB-Script##
 Want to change ROB-Script itself. Good thing it's unit tested and a single Python file! Just make sure you run tests:
 
-```python robscript_tests```
+```python robscript_tests.py```
 
 Hey, you might need to install "pymox":https://code.google.com/p/pymox/ to run the tests but that's no bad is it?
