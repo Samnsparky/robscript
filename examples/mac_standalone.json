@@ -1,0 +1,9 @@
+{
+    "root": "/Users/apottinger/rob/kipling_build",
+    "switchboard_branch": "alpha",
+    "labjack_nodejs_branch": "master",
+    "upload_name": "",
+    "log_name": "",
+    "node_webkit_version": "0.8.4",
+    "build_from_scratch": false
+}

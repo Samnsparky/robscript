@@ -1,0 +1,55 @@
+"	Preparing switchboard source
+/	/Users/labjack/kipling_build/ljswitchboard
+>	git fetch origin
+>	git checkout {{ switchboard_branch }}
+>	git pull origin {{ switchboard_branch }}
+/	/Users/labjack/kipling_build/ljswitchboard/src
+>	npm install
+
+"	Preparing LabJack-nodejs source
+/	/Users/labjack/kipling_build/LabJack-nodejs
+>	git fetch origin
+>	git checkout {{ labjack_nodejs_branch }}
+>	git pull origin {{ labjack_nodejs_branch }}
+>	npm install
+>	cp -rf /Users/labjack/kipling_build/LabJack-nodejs/lib /Users/labjack/kipling_build/ljswitchboard/src/node_modules/labjack-nodejs
+
+"	Preparing ffi
+/	/Users/labjack/kipling_build/ljswitchboard/src/node_modules/labjack-nodejs/node_modules/ffi
+>	nw-gyp configure --target={{ node_webkit_version }}
+>	nw-gyp build
+
+"	Preparing ref
+/	/Users/labjack/kipling_build/ljswitchboard/src/node_modules/labjack-nodejs/node_modules/ref
+>	nw-gyp configure --target={{ node_webkit_version }}
+>	nw-gyp build
+
+"	Preparing node-webkit
+/	/Users/labjack/kipling_build/dumping
+?	rm node-webkit-v{{ node_webkit_version }}-osx-ia32.zip
+>	wget https://s3.amazonaws.com/node-webkit/v{{ node_webkit_version }}/node-webkit-v{{ node_webkit_version }}-osx-ia32.zip --no-check-certificate
+>	tar -zxvf node-webkit-v{{ node_webkit_version }}-osx-ia32.zip -C ./nodewebkit_holding
+>	cp -rf /Users/labjack/kipling_build/dumping/nodewebkit_holding/node-webkit.app /Users/labjack/kipling_build/ljswitchboard/deploy/node-webkit.app
+
+"	Preparing solution
+>	cp -rf /Users/labjack/kipling_build/ljswitchboard/src /Users/labjack/kipling_build/ljswitchboard/deploy
+>	cp -rf /Users/labjack/kipling_build/ljswitchboard/switchboard_modules /Users/labjack/kipling_build/ljswitchboard/deploy
+
+"	Zipping source
+/	/Users/labjack/kipling_build/ljswitchboard/deploy/src
+>	zip -r ../app.nw ./*
+/	/Users/labjack/kipling_build/ljswitchboard/deploy
+>	rm -r ./src
+
+"	Packaging
+/	/Users/labjack/kipling_build/ljswitchboard/deploy
+?	rm node-webkit.app/Contents/Resources/app.nw
+>	mv ./app.nw node-webkit.app/Contents/Resources/
+?	rm -r ./kipling.app
+>	mv ./node-webkit.app ./kipling.app
+>	zip -r ../deploy.zip ./*
+
+"	Uploading results
+/	/Users/labjack/kipling_build/ljswitchboard
+^	/Users/labjack/kipling_build/ljswitchboard/deploy.zip	{{ upload_name }}
+%	{{ log_name }}
