@@ -23,7 +23,7 @@ It's up to you if you want to use a [virtual environemnt](http://docs.python-gui
 Robscripts (noimnally endinging in .rob) have line command per line. The first item per line is the command followed by tab (not four spaces... tabs!) separated parameters. Sorry it's weird. Made writing a ROB-Script parser in about an hour pretty easy though!
 
 
-###.robscript files have awesome templating for reusability super-powers!###
+###Awesome templating for reusability super-powers!###
 All rob scripts are run as [jinja2](http://jinja.pocoo.org/docs/) templates to make them easier to re-use between machines and build environments. How do you provide values to those jinja2 templates? A JSON file of the form:
 
 ```js
