@@ -2,6 +2,9 @@
 Your friendly neighborhood cross-platform "automated builds shouldn't suck" glorified bash-like scripting language.
 
 
+##Authors###
+Developed by "Sam Pottinger":https://gleap.org for "LabJack":http://labjack.com.
+
 
 ##Motivation###
 LJ-ROB (LabJack's remote orchestrated build system) simplifies cross-platform builds for LabJack's trove of cross-platform multi-architecture software involving GUIs, native libraries, and other things that go bump in the night. However, while the software behind LJ-ROB is nice, writing Python programs that integrate with ROB isn't. ROB-script feels less like Python and more like BASH while enabling **"build + test this on five computers with different OS-es and architectures all at one" kung-foo.**
