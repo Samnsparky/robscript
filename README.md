@@ -92,4 +92,4 @@ Want to change ROB-Script itself. Good thing it's unit tested and a single Pytho
 
 ```python robscript_tests.py```
 
-Hey, you might need to install [pymox](https://code.google.com/p/pymox/) to run the tests but that's no bad is it?
+Hey, you might need to install [pymox](https://code.google.com/p/pymox/) to run the tests but that's not too bad is it?
