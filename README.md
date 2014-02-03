@@ -19,7 +19,7 @@ It's up to you if you want to use a [virtual environemnt](http://docs.python-gui
 ```pip install -r requirements.txt```
 
 
-###Meet the .robscript file###
+###Meet the .robscript file.###
 Robscripts (noimnally endinging in .rob) have line command per line. The first item per line is the command followed by tab (not four spaces... tabs!) separated parameters. Sorry it's weird. Made writing a ROB-Script parser in about an hour pretty easy though!
 
 
@@ -37,7 +37,7 @@ All rob scripts are run as [jinja2](http://jinja.pocoo.org/docs/) templates to m
 ```
 
 
-###Run ROB-script from your favorite shell!###
+###Run ROB-script from your favorite shell.###
 ```
 python robscript.py [path to robscript.rob file] [path to JSON template vals]
 ```
@@ -45,14 +45,14 @@ python robscript.py [path to robscript.rob file] [path to JSON template vals]
 Note that this does not have your script communicate with ROB central command or its repository for built stuff.  
 
 
-###Run ROB-script through ROB!###
+###Run ROB-script through ROB.###
 To be continued...
 
 
 ##Commands for ROB-scripts##
 Remember! Love not war and, for ROB-script, tabs not spaces.
 
-###Report the status of the build###  
+###Report the status of the build.###
 
  *  Reference: ```"	The new status message to report.```
  *  Example: ```"	Running unit tests.```
@@ -60,7 +60,7 @@ Remember! Love not war and, for ROB-script, tabs not spaces.
 Updates the status of this worker at ROB central command. If running robscript outside of ROB, this is a debug message printed to the shell.
 
 
-###Change the working directory###
+###Change the working directory.###
  
  *  Reference: ```/	The (preferably full) path to execute commands at .```
  *  Example: ```/	/home/build```
