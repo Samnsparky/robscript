@@ -54,40 +54,40 @@ Remember! Love not war and, for ROB-script, tabs not spaces.
 
 ###Report the status of the build.###
 
- *  Reference: ```"	The new status message to report.```
- *  Example: ```"	Running unit tests.```
+ *  Reference: ```"    The new status message to report.```
+ *  Example: ```"    Running unit tests.```
 
 Updates the status of this worker at ROB central command. If running robscript outside of ROB, this is a debug message printed to the shell.
 
 
 ###Change the working directory.###
  
- *  Reference: ```/	The (preferably full) path to execute commands at .```
- *  Example: ```/	/home/build```
+ *  Reference: ```/    The (preferably full) path to execute commands at .```
+ *  Example: ```/    /home/build```
 
 Will run the subsequent commands for your script from the given directory until the working directory is changed again. If you do not include this, the starting working directory will be the location of rob_script.py. Note that silly windows machines need backslashes.
 
 
 ###Execute a command on the shell.###
 
- *  Reference: ```>	The raw command to execute.```
- *  Example: ```>	git pull origin master```
+ *  Reference: ```>    The raw command to execute.```
+ *  Example: ```>    git pull origin master```
 
 Executes the given command in the current working directory exactly as written (see above).
 
 
 ###Upload a file to ROB.###
 
- *  Reference: ```^	Local path to file.	Remote name of file.```
- *  Example: ```^	/home/build/release.zip	release_mac.zip```
+ *  Reference: ```^    Local path to file.    Remote name of file.```
+ *  Example: ```^    /home/build/release.zip    release_mac.zip```
 
 Uploads a file to ROB's repository for built stuff. If running robscript outside of ROB, reports that an upload would have happened but does not actually upload.
 
 
 ###Upload a build log to ROB.###
 
- *  Reference:  ```%	Remote name to give log.```
- *  Example:```%	mac_log.txt```
+ *  Reference:  ```%    Remote name to give log.```
+ *  Example:```%    mac_log.txt```
 
 Upload your script's log file to ROB's repository for built stuff. If running robscript outside of ROB, reports that an upload would have happened but does not actually upload. Note that the log file will be saved locally either way.
 
