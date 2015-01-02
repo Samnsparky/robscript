@@ -1,7 +1,7 @@
 """Library / stand alone command line utility for running ROB-scripts.
 
 Library and stand alone command line utility for running ROB-scripts, glorified
-bash scripts that allow for remote orchastrated builds across many platforms,
+bash scripts that allow for remote orchestrated builds across many platforms,
 decreasing LabJack suck at building / maintaining cross platform software with
 occasionally burdensome build processes.
 
@@ -18,6 +18,7 @@ import subprocess
 import sys
 
 import jinja2
+from jinja2 import Environment, meta
 
 STATE_READ_LINE = 1
 STATE_CHANGE_DIR = 2
@@ -49,7 +50,7 @@ class RobScriptBuilder:
     "Simple finite automaton" that reads and executes rob-scripts, including
     file uploads and logging. Note that this automaton saves some additional
     information to itself other than a state identifier but, being an SFA, does
-    not have a stack or, obviosuly, support recursion in the regular language
+    not have a stack or, obviously, support recursion in the regular language
     that runs it.
     """
 
@@ -64,7 +65,7 @@ class RobScriptBuilder:
         @param send_upload: Function to call when sending an upload to ROB's
             central repository of built stuff.
         @type send_upload: function
-        @param on_status_update: The funciton to call with a status update.
+        @param on_status_update: The function to call with a status update.
         @type on_status_update: function
         @param on_error: The function to call when an error is encountered.
         @type on_error: function
@@ -145,7 +146,7 @@ class RobScriptBuilder:
 
         Executes a raw command on the shell from the working directory specified
         in the robscript. Note that this expects exactly one parameter read from
-        the robscirpt (saved to self.state_frame): the raw string with the
+        the robscript (saved to self.state_frame): the raw string with the
         command to be executed.
         """
         command = self.state_frame[0]
@@ -171,7 +172,7 @@ class RobScriptBuilder:
         """Upload a file to ROB's grand for stuff.
 
         Uploads a file to ROB's central repository for built stuff on S3. Note
-        that this expects two parameters read from the robscipt command:
+        that this expects two parameters read from the robscript command:
          - The FULL (str) path to the file that should be uploaded.
          - The FULL (str) name to give the file within the central repository.
         """
@@ -229,7 +230,7 @@ def build_params_dict(params, param_names):
     @type params: Iterable
     @param param_names: The corresponding name of each parameter.
     @type param_names: Iterable of str.
-    @return: Dictonary mapping parameter name to value.
+    @return: Dictionary mapping parameter name to value.
     @rtype: dict
     """
     if len(params) != len(param_names):
@@ -246,7 +247,7 @@ def run_job(script, send_upload, on_status_update, on_error, on_finish,
     @param send_upload: Function to call when sending an upload to ROB's central
         repository of built stuff.
     @type send_upload: function
-    @param on_status_update: The funciton to call with a status update.
+    @param on_status_update: The function to call with a status update.
     @type on_status_update: function
     @param on_error: The function to call when an error is encountered.
     @type on_error: function
@@ -269,7 +270,7 @@ def run_job(script, send_upload, on_status_update, on_error, on_finish,
 
 
 def create_print(prefix):
-    """Returns a funciton that print whatever was given to it with a prefix.
+    """Returns a function that print whatever was given to it with a prefix.
 
     @param prefix: The prefix to prepend to the strings printed by the returned
         function.
@@ -283,7 +284,60 @@ def create_print(prefix):
     return inner
 
 
-def main():
+def check_sanity(template, context):
+    """Check the sanity of a template, given a context to render that template.
+
+    @type template: str
+    @type context: dict
+    """
+    env = Environment()
+
+    contexted_templ = ''
+    for key, val in context.iteritems():
+
+        # Filter out empty strings. Checking the truthy-ness is not correct
+        # because the value `false` is a valid value.
+        if val != "":
+            contexted_templ += '{%% set %s = "%s" %%}\n' % (str(key), str(val))
+
+    contexted_templ += template
+
+    ast = env.parse(contexted_templ)
+    undeclared = meta.find_undeclared_variables(ast)
+
+    if len(undeclared) > 0:
+        raise ValueError('Undeclared variables : %s' % (str(undeclared)))
+
+
+def read_file(to_read):
+    with open(to_read) as f:
+        return f.read()
+
+
+def render_template(script, context):
+    check_sanity(script, context)
+    return jinja2.Template(script).render(context)
+
+
+def main(script, context):
+    """Main program logic, given a script and a context / parameters.
+
+    @param script, The robscript template to render and execute.
+    @type script, str
+    @param context, The parameters to use to render the robscript template.
+    @type context, dict
+    """
+    send_upload = create_print('[UPLOAD] ')
+    on_status_update = create_print('[STATUS] ')
+    on_error = create_print('[ERROR] ')
+    on_finish = create_print('Finished. ')
+
+    script = render_template(script, context)
+
+    run_job(script, send_upload, on_status_update, on_error, on_finish, '')
+
+
+if __name__ == '__main__':
     """Main program logic called if running this module stand-alone from CMD.
 
     Main program logic called if running this module as a stand-alone module
@@ -291,26 +345,15 @@ def main():
     """
     if len(sys.argv) < 3:
         print 'USAGE: python robscript.py script params_json'
-        return
+        sys.exit(1)
 
     script_loc = sys.argv[1]
-    params_json_loc = sys.argv[2]
+    context_json_loc = sys.argv[2]
 
-    send_upload = create_print('[UPLOAD] ')
-    on_status_update = create_print('[STATUS] ')
-    on_error = create_print('[ERROR] ')
-    on_finish = create_print('Finished. ')
+    context = None
+    with open(context_json_loc) as f:
+        context = json.load(f)
 
-    params = None
-    with open(params_json_loc) as f:
-        params = json.load(f)
+    script = read_file(script_loc)
 
-    script = None
-    with open(script_loc) as f:
-        script = jinja2.Template(f.read()).render(params)
-
-    run_job(script, send_upload, on_status_update, on_error, on_finish, '')
-
-
-if __name__ == '__main__':
-    main()
+    main(script, context)
